@@ -47,7 +47,7 @@ class MapVC: UIViewController {
         let savedLocation = UserDefaults.standard.value(forKey: "studentLocation")
         
         if savedLocation == nil {
-            self.performSegue(withIdentifier: "mapToNewLocation", sender: self)
+            self.performSegue(withIdentifier: "postNewLocation", sender: self)
         } else {
             let alert = UIAlertController(title: "You have already posted a student location.\nDo you want to overwrite your current location ?",
                                           message: nil,

@@ -61,7 +61,7 @@ class ListVC: UITableViewController {
             alert.addAction(UIAlertAction(title: "Overwrite",
                                           style: .destructive,
                                           handler: { (action) in
-                                            self.performSegue(withIdentifier: "mapToNewLocation", sender: self)
+                                            self.performSegue(withIdentifier: "postNewLocation", sender: self)
             }))
             
             present(alert, animated: true, completion: nil)

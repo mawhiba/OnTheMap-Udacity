@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		49393BCE229ADB340016F35A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49393BCD229ADB340016F35A /* AppDelegate.swift */; };
-		49393BD0229ADB340016F35A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49393BCF229ADB340016F35A /* ViewController.swift */; };
 		49393BD3229ADB350016F35A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49393BD1229ADB350016F35A /* Main.storyboard */; };
 		49393BD5229ADB3D0016F35A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49393BD4229ADB3D0016F35A /* Assets.xcassets */; };
 		49393BD8229ADB3D0016F35A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49393BD6229ADB3D0016F35A /* LaunchScreen.storyboard */; };
@@ -37,7 +36,6 @@
 /* Begin PBXFileReference section */
 		49393BCA229ADB340016F35A /* On the map.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "On the map.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		49393BCD229ADB340016F35A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		49393BCF229ADB340016F35A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		49393BD2229ADB350016F35A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		49393BD4229ADB3D0016F35A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		49393BD7229ADB3D0016F35A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -96,7 +94,6 @@
 			isa = PBXGroup;
 			children = (
 				49393BCD229ADB340016F35A /* AppDelegate.swift */,
-				49393BCF229ADB340016F35A /* ViewController.swift */,
 				49393BD1229ADB350016F35A /* Main.storyboard */,
 				4951B354229C332200201CCD /* UdacityAPI.swift */,
 				4951B35A229CDBEB00201CCD /* LoginVC.swift */,
@@ -226,7 +223,6 @@
 			files = (
 				4951B357229C6F2400201CCD /* StudentInformation.swift in Sources */,
 				4951B361229CDC2400201CCD /* NewPinVC.swift in Sources */,
-				49393BD0229ADB340016F35A /* ViewController.swift in Sources */,
 				4951B35B229CDBEB00201CCD /* LoginVC.swift in Sources */,
 				4948C811229E3FB100208A08 /* Extension.swift in Sources */,
 				4951B363229CDC3E00201CCD /* ShareVC.swift in Sources */,

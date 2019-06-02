@@ -12,7 +12,7 @@ import MapKit
 
 class UdacityAPI {
     
-    static func postSessionForLogin(with email: String, password: String, completion: @escaping ([String:Any]?, Error?) -> ())
+    static func postSessionForLogin(with email: String, password: String, completion: @escaping ([String:Any]?, String? , Error?) -> ())
     {
         var request = URLRequest(url: URL(string: "https://onthemap-api.udacity.com/v1/session")!)
         request.httpMethod = "POST"
@@ -21,20 +21,51 @@ class UdacityAPI {
         request.httpBody = "{\"udacity\": {\"username\": \"\(email)\", \"password\": \"\(password)\"}}".data(using: .utf8)
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if error == nil {
-                let range = 5..<data!.count
-                let dataAfterTrim = data?.subdata(in: range)
-                
-                do {
-                    let dataResult = try JSONSerialization.jsonObject(with: dataAfterTrim!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:Any]
-                    completion(dataResult,nil)
-                } catch {
-                    print(error)
-                }
-            } else {
-                completion(nil,error)
+            if error != nil {
+                completion(nil,nil,error)
                 return
             }
+            guard let httpStatusCode = (response as? HTTPURLResponse)?.statusCode else {return}
+            if httpStatusCode >= 200 && httpStatusCode < 300 {
+                // Since Status Code is valid. Process Data here only.
+                if data != nil {
+                    // This is syntax to create Range in Swift 5
+                    let range = 5..<data!.count
+                    let newData = data?.subdata(in: range) /* subset response data! */
+                    
+                    // Continue processing the data and deserialize it
+                    if let dataResult = try! JSONSerialization.jsonObject(with: newData!, options: JSONSerialization.ReadingOptions.allowFragments) as? [String:Any]{
+                        completion(dataResult,nil,nil)
+                    } else {
+                        completion(nil,nil, error?.localizedDescription as? Error)
+                    }
+                    
+                }
+            } else {
+                switch httpStatusCode {
+                case 400:
+                    completion(nil, "Bad Request", nil)
+                    return
+                case 401:
+                    completion(nil, "Invalid Credentials", nil)
+                    return
+                case 403:
+                    completion(nil, "Unauthorized", nil)
+                    return
+                case 405:
+                    completion(nil, "HttpMethod Not Allowed", nil)
+                    return
+                case 410:
+                    completion(nil, "URL Changed", nil)
+                    return
+                case 500:
+                    completion(nil, "Server Error", nil)
+                    return
+                default:
+                    completion(nil, "", error?.localizedDescription as? Error)
+                }
+            }
+
         }
         task.resume()
     }
@@ -102,12 +133,15 @@ class UdacityAPI {
             let session = URLSession.shared
             let task = session.dataTask(with: request) { data, response, error in
                 if error == nil {
-                    let dic = try! JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableLeaves) as! [String:Any]
-                    guard let results = dic["results"] as? [[String:Any]] else {return}
-                    let resultsData = try! JSONSerialization.data(withJSONObject: results, options: .prettyPrinted)
-                    let studentInfo = try! JSONDecoder().decode([StudentInformation].self, from: resultsData)
-                    SharedState.shared.studentInfo = studentInfo
-                    completion(studentInfo,nil)
+                    if let dic = try! JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableLeaves) as? [String:Any] {
+                        guard let results = dic["results"] as? [[String:Any]] else {return}
+                        let resultsData = try! JSONSerialization.data(withJSONObject: results, options: .prettyPrinted)
+                        let studentInfo = try! JSONDecoder().decode([StudentInformation].self, from: resultsData)
+                        SharedState.shared.studentInfo = studentInfo
+                        completion(studentInfo,nil)
+                    } else {
+                        completion(nil, error?.localizedDescription as? Error)
+                    }
                 } else {
                     completion(nil,error)
                     return

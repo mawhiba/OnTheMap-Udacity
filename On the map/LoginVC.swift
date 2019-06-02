@@ -28,11 +28,13 @@ class LoginVC: UIViewController {
             return
         }
         
-        UdacityAPI.postSessionForLogin(with: userEmail!, password: userPassword!) { (data, error) in
+        UdacityAPI.postSessionForLogin(with: userEmail!, password: userPassword!) { (data,httpStatusError, error) in
             if error != nil {
                 self.alert(title: "Error", message: error?.localizedDescription)
                 self.updateUI(processing: false)
                 return
+            } else if httpStatusError != nil {
+                self.alert(title: "Error", message: httpStatusError)
             } else {
                 if let data = data,
                     let errorMessage = data["error"] as? String {
