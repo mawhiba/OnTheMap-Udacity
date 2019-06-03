@@ -133,15 +133,22 @@ class UdacityAPI {
             let session = URLSession.shared
             let task = session.dataTask(with: request) { data, response, error in
                 if error == nil {
-                    if let dic = try! JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableLeaves) as? [String:Any] {
-                        guard let results = dic["results"] as? [[String:Any]] else {return}
-                        let resultsData = try! JSONSerialization.data(withJSONObject: results, options: .prettyPrinted)
-                        let studentInfo = try! JSONDecoder().decode([StudentInformation].self, from: resultsData)
-                        SharedState.shared.studentInfo = studentInfo
-                        completion(studentInfo,nil)
-                    } else {
-                        completion(nil, error?.localizedDescription as? Error)
+                    do {
+                        if let dic = try! JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableLeaves) as? [String:Any] {
+                            guard let results = dic["results"] as? [[String:Any]] else {return}
+                            let resultsData = try! JSONSerialization.data(withJSONObject: results, options: .prettyPrinted)
+                            let studentInfo = try! JSONDecoder().decode([StudentInformation].self, from: resultsData)
+                            SharedState.shared.studentInfo = studentInfo
+                            completion(studentInfo,nil)
+                        } else {
+                            completion(nil, error?.localizedDescription as? Error)
+                        }
                     }
+                    catch let err {
+                        print(err)
+                        completion(nil,error)
+                    }
+                    
                 } else {
                     completion(nil,error)
                     return
